@@ -3,7 +3,6 @@ zero123/experiments/*
 zero123/experiments/*
 zero123/experiments_cvpr/*
 3drec/experiments/*
-3drec/data/*
 syncdreamer_3drec/gso_cvpr_rec/*
 syncdreamer_3drec/gso_autoregressive_rec/*
 syncdreamer_3drec/gso_zero123_rec_spin16/*

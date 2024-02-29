@@ -20,7 +20,6 @@ syncdreamer_3drec/multi_view/*
 syncdreamer_3drec/abo/*
 syncdreamer_3drec/gso/*
 *.ckpt
-*.gif
 *.png
 *.jpg
 *.ply

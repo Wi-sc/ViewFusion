@@ -10,7 +10,6 @@ flagged/
 __pycache__
 *.zip
 *.ckpt
-*.mp4
 *.pth
 .ipynb_checkpoints/
 src/

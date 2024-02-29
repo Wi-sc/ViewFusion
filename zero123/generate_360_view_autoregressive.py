@@ -31,8 +31,6 @@ import matplotlib.pyplot as plt
 import torch.multiprocessing as mp
 
 _GPU_INDEX = 0
-# _GPU_INDEX = 2
-
 
 def load_model_from_config(config, ckpt, device, verbose=False):
     print(f'Loading model from {ckpt}')
@@ -86,82 +84,31 @@ def sample_model(input_im, model, sampler, precision, ddim_steps, scale, ddim_et
                                              x_T=None,
                                              interpolation_weight=interpolation_weight)
             print(samples_ddim.shape)
-            # samples_ddim = torch.nn.functional.interpolate(samples_ddim, 64, mode='nearest', antialias=False)
             samples_ddim = samples_ddim.mean(dim=0, keepdim=True)
             x_samples_ddim = model.decode_first_stage(samples_ddim)
-            # x_samples_ddim_list = []
-            # for samples_ddim_tmp in torch.split(samples_ddim, 4):
-            #     x_samples_ddim_list.append(model.decode_first_stage(samples_ddim_tmp))
-            # x_samples_ddim = torch.cat(x_samples_ddim_list, dim=0)
             return torch.clamp(x_samples_ddim, min=-1., max=1.0)
 
 
-class ABODataset(Dataset):
+class RenderingDataset(Dataset):
     def __init__(self):
         self.meta = []
-        # split = pd.read_csv('/home/ubuntu/data/abo/render/train_test_split.csv')
-        # split = split[split['SPLIT'] == 'TEST']['MODEL']
-        # with open(f'/home/ubuntu/data/abo/model_category.json', "r") as f:
-        #     model_catgeroy_dict = json.load(f)
-        # for model_name in split:
-        #     if model_name not in os.listdir('/home/ubuntu/workspace/zero123/3drec/data/sofa_zero123_rendering'):
-        #         continue
-        #     inference_id = 0
-        #     meta_dict = {
-        #         "model_name": model_name,
-        #         "inference_index": int(inference_id),
-        #         "inference_image_path": f"/home/ubuntu/workspace/zero123/3drec/data/sofa_zero123_rendering/{model_name}/{int(inference_id):03d}.png",
-        #     }
-        #     self.meta.append(meta_dict)
 
-        with open('/home/ubuntu/data/abo/rendering_test_list_video_condition_id.json', "r") as f:
+        with open('/home/ubuntu/data/GSO/rendering_test_list_video_condition_id.json', "r") as f:
             model_dict = json.load(f)
         for model_name in model_dict:
             inference_id = model_dict[model_name]
             meta_dict = {
                 "model_name": model_name,
                 "inference_index": int(inference_id),
-                "inference_image_path": f"/home/ubuntu/data/abo/zero123_renderings_elevation60/{model_name}/{int(inference_id):03d}.png",
+                "inference_image_path": f"/home/ubuntu/data/GSO/gso_renderings_elevation60/{model_name}/{int(inference_id):03d}.png",
             }
             self.meta.append(meta_dict)
-
-        # with open('/home/ubuntu/data/GSO/rendering_test_list_video_condition_id.json', "r") as f:
-        #     model_dict = json.load(f)
-        # for model_name in model_dict:
-        #     inference_id = model_dict[model_name]
-        #     meta_dict = {
-        #         "model_name": model_name,
-        #         "inference_index": int(inference_id),
-        #         "inference_image_path": f"/home/ubuntu/data/GSO/gso_renderings_elevation60/{model_name}/{int(inference_id):03d}.png",
-        #     }
-        #     self.meta.append(meta_dict)
         self.transform = transforms.Compose([
             transforms.Resize((256, 256)),
             transforms.ToTensor(),
         ])
     def __len__(self):
         return len(self.meta)
-
-    # def __getitem__(self, idx):
-    #     meta_info = self.meta[idx]
-    #     inference_image_path = meta_info['inference_image_path']
-    #     inference_mask_path = meta_info['inference_mask_path']
-    #     model_name, env_index = meta_info['model_name'], meta_info['env_index']
-
-    #     inference = self.load_filtered_img(inference_image_path, inference_mask_path)
-    #     inference = inference * 2 - 1
-
-    #     return inference, model_name, env_index
-    
-    # def load_filtered_img(self, image_path, mask_path):
-    #     image = Image.open(image_path).convert("RGB")
-    #     mask = Image.open(mask_path).convert("1")
-
-    #     # Apply background filtering
-    #     image_filtered = Image.new("RGB", image.size, color=(255,255,255))
-    #     image_filtered.paste(image, mask=mask)
-    #     image_filtered = self.transform(image_filtered)
-    #     return image_filtered
 
     def __getitem__(self, idx):
         meta_info = self.meta[idx]
@@ -183,18 +130,16 @@ class ABODataset(Dataset):
         return img
 
 class RealDataset(Dataset):
-    def __init__(self):
+    def __init__(self, data_dir='/home/ubuntu/workspace/zero123/3drec/data/real_images/'):
         self.meta = []
-        for model_name in os.listdir("/home/ubuntu/workspace/zero123/3drec/data/real_images_zero123"):
-            inference_id = model_name.split(".")[0]
+        for model_name in os.listdir(data_dir):
             meta_dict = {
-                "model_name": inference_id,
-                "inference_index": int(inference_id),
-                "env_index": inference_id,
-                "inference_image_path": f"/home/ubuntu/workspace/zero123/3drec/data/real_images_zero123/{inference_id}.png",
-                "inference_mask_path": f"/home/ubuntu/workspace/zero123/3drec/data/real_images_zero123/{inference_id}.png",
+                "model_name": model_name.split('.')[0],
+                "inference_index": 0,
+                "inference_image_path": f"{data_dir}/{model_name}",
             }
             self.meta.append(meta_dict)
+            
         self.transform = transforms.Compose([
             transforms.Resize((256, 256)),
             transforms.ToTensor(),
@@ -205,13 +150,13 @@ class RealDataset(Dataset):
     def __getitem__(self, idx):
         meta_info = self.meta[idx]
         inference_image_path = meta_info['inference_image_path']
-        inference_mask_path = meta_info['inference_mask_path']
-        model_name, env_index = meta_info['model_name'], meta_info['env_index']
+        inference_mask_path = inference_image_path
+        model_name = meta_info['model_name']
 
         inference = self.load_filtered_img(inference_image_path, inference_mask_path)
         inference = inference * 2 - 1
 
-        return inference, model_name, env_index
+        return inference, model_name
     
     def load_filtered_img(self, image_path, mask_path):
         image = Image.open(image_path).convert("RGB")
@@ -223,18 +168,14 @@ class RealDataset(Dataset):
         image_filtered.paste(image, mask=mask)
         image_filtered = self.transform(image_filtered)
         return image_filtered
-       
+    
 def main_run(models, device, dataset, inference_temp, auto_temp, output_dir, scale=3.0, ddim_steps=75, ddim_eta=1.0, precision='fp32', h=256, w=256):
     '''
     :param raw_im (PIL Image).
     '''
-
     
     dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
     sampler = DDIMSampler(models['turncam'])
-    # used_x = -x  # NOTE: Polar makes more sense in Basile's opinion this way!
-    # used_x = x  # NOTE: Set this way for consistency.
-
     
     for data in dataloader:
         # inference, model_name, env_index = data
@@ -269,7 +210,6 @@ def main_run(models, device, dataset, inference_temp, auto_temp, output_dir, sca
             interpolation_weight = torch.from_numpy(interpolation_weight)[valid_index]
             if view_id>=1:
                 inference_weight = np.exp(-(view_id+1)/degree_steps/inference_temp)
-                # inference_weight = 0.5
                 interpolation_weight[1:] = torch.nn.functional.softmax(-interpolation_weight[1:]/interpolation_weight[1:].max()/auto_temp)*(1-inference_weight)
                 interpolation_weight[0] = inference_weight
             else:
@@ -315,22 +255,13 @@ if __name__ == '__main__':
 
     import argparse
     parser = argparse.ArgumentParser(description='Process some integers.')
-    parser.add_argument('--inference_temp', required=True, help='inference temperature', type=float)
-    parser.add_argument('--auto_temp', required=True, help='autoregressive temperature', type=float)
+    parser.add_argument('--inference_temp', default=0.5, help='inference temperature', type=float)
+    parser.add_argument('--auto_temp', default=0.5, help='autoregressive temperature', type=float)
     args = parser.parse_args()
 
     device_idx=_GPU_INDEX
-    # ckpt='/home/ubuntu/workspace/zero123/zero123/105000.ckpt'
-    ckpt='/home/ubuntu/workspace/zero123/zero123/zero123-xl.ckpt'
-    # ckpt='/home/ubuntu/workspace/zero123/zero123/logs/2023-06-10T11-42-05_sd-abo-finetune-c_concat-256/checkpoints/trainstep_checkpoints/epoch=000249-step=000000999.ckpt'
-    # config='/home/ubuntu/workspace/zero123/zero123/configs/sd-objaverse-finetune-c_concat-256.yaml'
-    config='/home/ubuntu/workspace/zero123/zero123/configs/sd-swap_att-c_concat-256.yaml'
-
-    # print('sys.argv:', sys.argv)
-    # if len(sys.argv) > 1:
-    #     print('old device_idx:', device_idx)
-    #     device_idx = int(sys.argv[1])
-    #     print('new device_idx:', device_idx)
+    ckpt='./zero123/zero123-xl.ckpt'
+    config='./zero123/configs/sd-swap_att-c_concat-256.yaml'
 
     config = OmegaConf.load(config)
 
@@ -340,13 +271,11 @@ if __name__ == '__main__':
     print('Instantiating LatentDiffusion...')
     models['turncam'] = load_model_from_config(config, ckpt, device=device)
 
-    dataset = ABODataset()
-    # dataset = RealDataset()
-
+    dataset = RealDataset()
 
     inference_temp = args.inference_temp
     auto_temp = args.auto_temp
-    output_dir = f'/home/ubuntu/workspace/zero123/zero123/experiments_cvpr/pretrain_zero123_xl_360_autoregressive/gen_abo_blender_elevation60_inference_t{inference_temp:.2f}_auto_t{auto_temp:.2f}'
+    output_dir = f'./zero123/experiments_cvpr/pretrain_zero123_xl_360_autoregressive/gen_inference_t{inference_temp:.2f}_auto_t{auto_temp:.2f}'
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     with open(f"{output_dir}/parameter.txt", "w") as f:
@@ -354,21 +283,3 @@ if __name__ == '__main__':
         f.write(f"auto_temp: {auto_temp}\n")
         
     main_run(models, device, dataset, inference_temp, auto_temp, output_dir)
-
-    # processes = []
-    # dataset_len = len(dataset)
-    # rank_num = 8
-    # subset_split = [dataset_len//rank_num for i in range(rank_num)]
-    # if sum(subset_split)!=dataset_len:
-    #     subset_split[-1] += dataset_len-sum(subset_split)
-    # print(subset_split)
-    # dataset_list = torch.utils.data.random_split(dataset, subset_split)
-    # for rank in range(rank_num):
-    #     device = f'cuda:{rank}'
-    #     models = dict()
-    #     models['turncam'] = load_model_from_config(config, ckpt, device=device)
-    #     p = mp.Process(target=main_run, args=(models, device, dataset_list[rank], inference_temp, auto_temp, output_dir))
-    #     p.start()
-    #     processes.append(p)
-    # for p in processes:
-    #     p.join()

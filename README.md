@@ -22,6 +22,11 @@
 - [x] We've limited the autoregressive window size, so don't worry about the memory requirement. It needs around 23GB VRAM so it's totally runnable on a RTX 3090/4090(Ti)!  
 
 ##  Usage
+
+### Training
+
+Training? No! We don't need any training or finetuning. :wink:
+
 ###  Novel View Synthesis
 We use the totally same environment with [Zero-1-to-3](https://github.com/cvlab-columbia/zero123).
 ```
@@ -43,50 +48,40 @@ wget https://cv.cs.columbia.edu/zero123/assets/$iteration.ckpt    # iteration = 
 ```
 [Zero-1-to-3](https://github.com/cvlab-columbia/zero123) has released 5 model weights: `105000.ckpt`, `165000.ckpt`, `230000.ckpt`, `300000.ckpt`, and `zero123-xl.ckpt`. By default, we use `zero123-xl.ckpt`, but we also find that 105000.ckpt which is the checkpoint after finetuning 105000 iterations on objaverse has better generalization ablitty. So if you are trying to generate novel-view images and find one model fails, you can try another one.
 
-### Training
+We have provided some processed real images in `./3drec/data/real_images/`. You can directly run `generate_360_view_autoregressive.py` and play it. If you want to try it on your own images, you may need to pre-process them, including resize and segmentation. 
+```
+cd ./3drec/data/
+python process_real_images.py
+```
+If you find any other interesting images that can be shown here, please send it to me and I'm very happy to make our project more attractive! :wink:
 
-Training? We don't need any training or finetuning. :wink:
 
 ### Dataset
 
-Download our objaverse renderings with:
+[Zero-1-to-3](https://github.com/cvlab-columbia/zero123) was trained on objaverse and you can download their renderings with:
 ```
 wget https://tri-ml-public.s3.amazonaws.com/datasets/views_release.tar.gz
 ```
-Disclaimer: note that the renderings are generated with Objaverse. The renderings as a whole are released under the ODC-By 1.0 license. The licenses for the renderings of individual objects are released under the same license creative commons that they are in Objaverse.
+The GSO renderings evaluated in our paper can be downloaded with:
+```
+wget https://tri-ml-public.s3.amazonaws.com/datasets/views_release.tar.gz
+```
 
 ### 3D Reconstruction (NeuS)
-Note that we haven't extensively tuned the hyperparameters for 3D recosntruction. Feel free to explore and play around!
+Note that we haven't use the distillation way to get the 3D model, no matter [SDS](https://github.com/ashawkey/stable-dreamfusion) or [SJC](https://github.com/pals-ttic/sjc). We directly train [NeuS](https://github.com/Totoro97/NeuS) as our model can generate consistent multi-view images. Feel free to explore and play around!
 ```
 cd 3drec
 pip install -r requirements.txt
-python run_zero123.py \
-    --scene pikachu \
-    --index 0 \
-    --n_steps 10000 \
-    --lr 0.05 \
-    --sd.scale 100.0 \
-    --emptiness_weight 0 \
-    --depth_smooth_weight 10000. \
-    --near_view_weight 10000. \
-    --train_view True \
-    --prefix "experiments/exp_wild" \
-    --vox.blend_bg_texture False \
-    --nerf_path "data/nerf_wild"
+cd ../syncdreamer_3drec
+python my_train_renderer_spin36.py \
+        -i {img_dir}/{model_name}/{inference_id} \
+        -n {model_name} \
+        -e {elevation} \
+        -d {distance} \
+        -l {output_dir}
 ```
-- You can see results under: `3drec/experiments/exp_wild/$EXP_NAME`.  
+- You can see results under: `syncdreamer_3drec/{output_dir}/{model_name}`.  If you are trying on real images and have no idea about the `evaluation` and `distance`, maybe you can set them as default `60/180*pi` and `1.5`, respectively.
 
-
-- To export a mesh from the trained Voxel NeRF with marching cube, use the [`export_mesh`](https://github.com/cvlab-columbia/zero123/blob/3736c13fc832c3fc8bf015de833e9da68a397ed9/3drec/voxnerf/vox.py#L71) function. For example, add a line:
-
-    ``` vox.export_mesh($PATH_TO_EXPORT)```
-
-    under the [`evaluate`](https://github.com/cvlab-columbia/zero123/blob/3736c13fc832c3fc8bf015de833e9da68a397ed9/3drec/run_zero123.py#L304) function.  
-
-
-- The dataset is formatted in the same way as NeRF for the convenience of dataloading. In reality, the recommended input in addition to the input image is an estimate of the elevation angle of the image (e.g. if the image is taken from top, the angle is 0, front is 90, bottom is 180). This is hard-coded now to the extrinsics matrix in `transforms_train.json`
-
-- We tested the installation processes on a system with Ubuntu 20.04 with an NVIDIA GPU with Ampere architecture.
 
 
 ##  Acknowledgement

@@ -21,7 +21,6 @@ syncdreamer_3drec/abo/*
 syncdreamer_3drec/gso/*
 *.ckpt
 *.gif
-*.mp4
 *.png
 *.jpg
 *.ply

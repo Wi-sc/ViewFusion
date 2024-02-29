@@ -20,7 +20,7 @@
 ## Updates
 - [ ] The clean code has been uploaded!
 - [x] The project page is online now 🤗: https://wi-sc.github.io/ViewFusion.github.io/.  
-- [x] We've limit the autoregressive window size, so don't worry about the memeory requirement. It needs around 23GB VRAM so it's totally runnable on a RTX 3090/4090(Ti)!  
+- [x] We've limited the autoregressive window size, so don't worry about the memory requirement. It needs around 23GB VRAM so it's totally runnable on a RTX 3090/4090(Ti)!  
 
 ##  Usage
 ###  Novel View Synthesis
@@ -48,7 +48,7 @@ wget https://cv.cs.columbia.edu/zero123/assets/$iteration.ckpt    # iteration = 
 
 Training? We don't need any training or finetuning. :wink:
 
-### Dataset (Objaverse Renderings)
+### Dataset
 
 Download our objaverse renderings with:
 ```
@@ -56,7 +56,7 @@ wget https://tri-ml-public.s3.amazonaws.com/datasets/views_release.tar.gz
 ```
 Disclaimer: note that the renderings are generated with Objaverse. The renderings as a whole are released under the ODC-By 1.0 license. The licenses for the renderings of individual objects are released under the same license creative commons that they are in Objaverse.
 
-### 3D Reconstruction (SJC)
+### 3D Reconstruction (NeuS)
 Note that we haven't extensively tuned the hyperparameters for 3D recosntruction. Feel free to explore and play around!
 ```
 cd 3drec
@@ -91,7 +91,7 @@ python run_zero123.py \
 
 
 ##  Acknowledgement
-This repository is based on [Zero-1-to-3](https://github.com/CompVis/stable-diffusion), [Objaverse](https://objaverse.allenai.org/), NeruS and [SyncDreamer](https://github.com/pals-ttic/sjc/). We would like to thank the authors of these work for publicly releasing their code.
+This repository is based on [Stable Diffusion](https://github.com/CompVis/stable-diffusion), [Zero-1-to-3](https://zero123.cs.columbia.edu/), [Objaverse](https://objaverse.allenai.org/), [NeuS](https://github.com/Totoro97/NeuS) and [SyncDreamer](https://github.com/pals-ttic/sjc/). We would like to thank the authors of these work for publicly releasing their code.
 
 
 ##  Citation

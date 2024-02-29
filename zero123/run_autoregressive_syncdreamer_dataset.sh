@@ -1,0 +1,1 @@
+python generate_syncdreamer_renderings_autoregressive.py --inference_temp 0.5 --auto_temp 1.0

@@ -1,0 +1,16 @@
+python run_zero123_with_consistent_renderings_autoregressive.py \
+    --scene B07DB8XGY2 \
+    --index 0 \
+    --n_steps 10000 \
+    --lr 0.05 \
+    --sd.scale 100.0 \
+    --emptiness_weight 1000. \
+    --depth_smooth_weight 500. \
+    --view_weight 10000 \
+    --near_view_weight 500. \
+    --train_view True \
+    --prefix experiments/pretrain_autoregreesive_120degree_inference_5e-1_consistent_emptiness_1000  \
+    --vox.blend_bg_texture False \
+    --nerf_path data/sofa_zero123_rendering \
+    --pose.FoV 49.1 \
+    --uncertainty_threshold 0.03 --pose.R 2.0  

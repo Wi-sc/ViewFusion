@@ -6,7 +6,7 @@
  <sup>1</sup>Amazon, <sup>2</sup>The University of Sydney, <sup>3</sup>The University of Adelaide
 
 ### [Novel View Synthesis](https://github.com/Wi-sc/ViewFusion#novel-view-synthesis-1):
-<video auto-play="true" loop="loop" muted="muted" plays-inline="true">
+<video  width="320" height="240" auto-play="true" loop="loop" muted="muted" plays-inline="true">
   <source src="video/real_images.mp4" type="video/mp4">
 </video>
 

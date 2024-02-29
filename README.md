@@ -1,19 +1,18 @@
 # ViewFusion: Towards Multi-View Consistency via Interpolated Denoising
-[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/cvlab/zero123-live)
 ### [Project Page](https://wi-sc.github.io/ViewFusion.github.io/)  | [Paper]() | [Arxiv]() | [Video]()
 
 [ViewFusion: Towards Multi-View Consistency via Interpolated Denoising](https://wi-sc.github.io/ViewFusion.github.io/)  
  [Xianghui Yang](https://wi-sc.github.io/xianghui-yang)<sup>1,2</sup>, [Yan Zuo](https://www.amazon.science/author/yan-zuo)<sup>1</sup>, [Sameera Ramasinghe](https://www.amazon.science/author/sameera-ramasinghe)<sup>1</sup>, [Loris Bazzani](https://lorisbaz.github.io/)<sup>1</sup>, [Gil Avraham](https://www.amazon.science/author/gil-avraham/)<sup>1</sup>, [Anton van den Hengel](https://researchers.adelaide.edu.au/profile/anton.vandenhengel)<sup>1,3</sup> <br>
  <sup>1</sup>Amazon, <sup>2</sup>The University of Sydney, <sup>3</sup>The University of Adelaide
 
-### [Novel View Synthesis](https://github.com/cvlab-columbia/zero123#novel-view-synthesis-1):
+### [Novel View Synthesis](https://github.com/Wi-sc/ViewFusion#novel-view-synthesis-1):
 <video auto-play="true" loop="loop" muted="muted" plays-inline="true">
   <source src="video/real_images.mp4" type="video/mp4">
 </video>
 
-### [3D Reconstruction](https://github.com/cvlab-columbia/zero123#3d-reconstruction-sjc):
+### [3D Reconstruction](https://github.com/Wi-sc/ViewFusion#3d-reconstruction-neus):
 <video auto-play="true" loop="loop" muted="muted" plays-inline="true">
-  <source src="video/gso_shape.mp4" type="video/mp4">
+  <source src="./video/gso_shape.mp4" type="video/mp4">
 </video>
 
 
@@ -42,7 +41,7 @@ Download checkpoint under `zero123` through one of the following sources:
 https://huggingface.co/cvlab/zero123-weights/tree/main
 wget https://cv.cs.columbia.edu/zero123/assets/$iteration.ckpt    # iteration = [105000, 165000, 230000, 300000]
 ```
-[Zero-1-to-3](https://github.com/cvlab-columbia/zero123) have released 5 model weights: `105000.ckpt`, `165000.ckpt`, `230000.ckpt`, `300000.ckpt`, and `zero123-xl.ckpt`. By default, we use `zero123-xl.ckpt`, but we also find that 105000.ckpt which is the checkpoint after finetuning 105000 iterations on objaverse has better generalization ablitty. So if you are trying to generate novel-view images and find one model fails, you can try another one.
+[Zero-1-to-3](https://github.com/cvlab-columbia/zero123) has released 5 model weights: `105000.ckpt`, `165000.ckpt`, `230000.ckpt`, `300000.ckpt`, and `zero123-xl.ckpt`. By default, we use `zero123-xl.ckpt`, but we also find that 105000.ckpt which is the checkpoint after finetuning 105000 iterations on objaverse has better generalization ablitty. So if you are trying to generate novel-view images and find one model fails, you can try another one.
 
 ### Training
 

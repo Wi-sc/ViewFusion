@@ -7,24 +7,24 @@
  <sup>1</sup>Amazon, <sup>2</sup>The University of Sydney, <sup>3</sup>The University of Adelaide
 
 ### [Novel View Synthesis](https://github.com/cvlab-columbia/zero123#novel-view-synthesis-1):
-<p align="center">
-  <img width="90%" src="teaser.png">
-</p>
+<video auto-play="true" loop="loop" muted="muted" plays-inline="true">
+  <source src="video/real_images.mp4" type="video/mp4">
+</video>
 
 ### [3D Reconstruction](https://github.com/cvlab-columbia/zero123#3d-reconstruction-sjc):
-<p align="center">
-  <img width="90%" src="texture.gif">
-</p>
+<video auto-play="true" loop="loop" muted="muted" plays-inline="true">
+  <source src="video/gso_shape.mp4" type="video/mp4">
+</video>
 
 
 ## Updates
-- [Stable-Dreamfusion](https://github.com/ashawkey/stable-dreamfusion) has recently implemented 3D reconstruction with zero123 using Instant-NGP and SDS loss from DreamFusion. Shout out to [@ashawkey](https://github.com/ashawkey)!
-- We have released [training script](https://github.com/cvlab-columbia/zero123#training-script-preliminary) and [objaverse renderings](https://github.com/cvlab-columbia/zero123#dataset-objaverse-renderings).  
-- Live demo released 🤗: https://huggingface.co/spaces/cvlab/zero123-live. Shout out to Huggingface for funding this demo!!  
-- We've optimized our code base with some simple tricks and the current demo runs at around 22GB VRAM so it's runnable on a RTX 3090/4090(Ti)!  
+- [ ] The clean code has been uploaded!
+- [x] The project page is online now 🤗: https://wi-sc.github.io/ViewFusion.github.io/.  
+- [x] We've limit the autoregressive window size, so don't worry about the memeory requirement. It needs around 23GB VRAM so it's totally runnable on a RTX 3090/4090(Ti)!  
 
 ##  Usage
 ###  Novel View Synthesis
+We use the totally same environment with [Zero-1-to-3](https://github.com/cvlab-columbia/zero123).
 ```
 conda create -n zero123 python=3.9
 conda activate zero123
@@ -42,15 +42,7 @@ Download checkpoint under `zero123` through one of the following sources:
 https://huggingface.co/cvlab/zero123-weights/tree/main
 wget https://cv.cs.columbia.edu/zero123/assets/$iteration.ckpt    # iteration = [105000, 165000, 230000, 300000]
 ```
-Note that we have released 4 model weights: 105000.ckpt, 165000.ckpt, 230000.ckpt, 300000.ckpt. By default, we use 105000.ckpt which is the checkpoint after finetuning 105000 iterations on objaverse. Naturally, checkpoints trained longer tend to overfit to training data and suffer in zero-shot generalization, though we didn't empirically verify this. 300000.ckpt is trained for around 6000 A100 hours.
-
-Run our gradio demo for novel view synthesis:
-
-```
-python gradio_new.py
-```
-
-Note that this app uses around 22 GB of VRAM, so it may not be possible to run it on any GPU.
+[Zero-1-to-3](https://github.com/cvlab-columbia/zero123) have released 5 model weights: `105000.ckpt`, `165000.ckpt`, `230000.ckpt`, `300000.ckpt`, and `zero123-xl.ckpt`. By default, we use `zero123-xl.ckpt`, but we also find that 105000.ckpt which is the checkpoint after finetuning 105000 iterations on objaverse has better generalization ablitty. So if you are trying to generate novel-view images and find one model fails, you can try another one.
 
 ### Training
 

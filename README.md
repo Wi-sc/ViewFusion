@@ -64,7 +64,7 @@ wget https://tri-ml-public.s3.amazonaws.com/datasets/views_release.tar.gz
 ```
 The GSO renderings evaluated in our paper can be downloaded with:
 ```
-wget https://tri-ml-public.s3.amazonaws.com/datasets/views_release.tar.gz
+gdown https://drive.google.com/file/d/10JpfE5jqJRiuhQbxn74ks8RsLp1wpMim/view?usp=sharing
 ```
 
 ### 3D Reconstruction (NeuS)

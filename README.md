@@ -17,7 +17,7 @@
 
 
 ## Updates
-- [ ] The clean code has been uploaded!
+- [ ] Doing the code clean...
 - [x] The project page is online now 🤗: https://wi-sc.github.io/ViewFusion.github.io/.  
 - [x] We've limited the autoregressive window size, so don't worry about the memory requirement. It needs around 23GB VRAM so it's totally runnable on a RTX 3090/4090(Ti)!  
 
@@ -45,10 +45,19 @@ Download checkpoint under `zero123` through one of the following sources:
 ```
 https://huggingface.co/cvlab/zero123-weights/tree/main
 wget https://cv.cs.columbia.edu/zero123/assets/$iteration.ckpt    # iteration = [105000, 165000, 230000, 300000]
+wget https://zero123.cs.columbia.edu/assets/zero123-xl.ckpt
 ```
 [Zero-1-to-3](https://github.com/cvlab-columbia/zero123) has released 5 model weights: `105000.ckpt`, `165000.ckpt`, `230000.ckpt`, `300000.ckpt`, and `zero123-xl.ckpt`. By default, we use `zero123-xl.ckpt`, but we also find that 105000.ckpt which is the checkpoint after finetuning 105000 iterations on objaverse has better generalization ablitty. So if you are trying to generate novel-view images and find one model fails, you can try another one.
 
-We have provided some processed real images in `./3drec/data/real_images/`. You can directly run `generate_360_view_autoregressive.py` and play it. If you want to try it on your own images, you may need to pre-process them, including resize and segmentation. 
+We have provided some processed real images in `./3drec/data/real_images/`. You can directly run `generate_360_view_autoregressive.py` and play it. Don't forget to change the model path and configure path in the code.
+```
+cd ./3drec/data/
+python generate_360_view_autoregressive_real.py # generate 360-degree images for real image demo
+python generate_360_view_autoregressive.py # generate 360-degree images for multi-view consistency evaluation
+python generate_zero123renderings_autoregressive.py # generate only 1 novel-view image given target pose for image quality evaluation
+```
+
+If you want to try it on your own images, you may need to pre-process them, including resize and segmentation. 
 ```
 cd ./3drec/data/
 python process_real_images.py

@@ -233,11 +233,8 @@ if __name__ == '__main__':
     # args = parser.parse_args()
 
     device_idx=_GPU_INDEX
-    # ckpt='/home/ubuntu/workspace/zero123/zero123/105000.ckpt'
-    ckpt='/home/ubuntu/workspace/zero123/zero123/zero123-xl.ckpt'
-    # ckpt='/home/ubuntu/workspace/zero123/zero123/logs/2023-06-10T11-42-05_sd-abo-finetune-c_concat-256/checkpoints/trainstep_checkpoints/epoch=000249-step=000000999.ckpt'
-    # config='/home/ubuntu/workspace/zero123/zero123/configs/sd-objaverse-finetune-c_concat-256.yaml'
-    config='/home/ubuntu/workspace/zero123/zero123/configs/sd-swap_att-c_concat-256.yaml'
+    ckpt='./zero123/zero123-xl.ckpt'
+    config='./zero123/configs/sd-swap_att-c_concat-256.yaml'
 
     # print('sys.argv:', sys.argv)
     # if len(sys.argv) > 1:
@@ -258,7 +255,7 @@ if __name__ == '__main__':
 
     inference_temp = 0.5
     auto_temp = 1.0
-    output_dir = f'/home/ubuntu/workspace/zero123/zero123/experiments_cvpr/pretrain_zero123_xl_360_autoregressive_real/gen_real_elevation60_inference_t{inference_temp:.2f}_auto_t{auto_temp:.2f}_pred_e'
+    output_dir = f'./experiments/pretrain_zero123_xl_360_autoregressive_real/gen_real_elevation60_inference_t{inference_temp:.2f}_auto_t{auto_temp:.2f}_pred_e'
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     with open(f"{output_dir}/parameter.txt", "w") as f:

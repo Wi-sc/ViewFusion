@@ -1,0 +1,13 @@
+pydantic
+tqdm
+click
+easydict
+tabulate
+imageio
+matplotlib
+transformers
+PyMCubes
+point-cloud-utils
+lpips
+trimesh
+git+https://github.com/NVlabs/tiny-cuda-nn/#subdirectory=bindings/torch

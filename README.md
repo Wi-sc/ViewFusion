@@ -1,5 +1,5 @@
 # ViewFusion: Towards Multi-View Consistency via Interpolated Denoising
-### [Project Page](https://wi-sc.github.io/ViewFusion.github.io/)  | [Paper]() | [Arxiv]() | [Video]()
+### [Project Page](https://wi-sc.github.io/ViewFusion.github.io/)  | [Paper](https://openaccess.thecvf.com/content/CVPR2024/html/Yang_ViewFusion_Towards_Multi-View_Consistency_via_Interpolated_Denoising_CVPR_2024_paper.html) | [Arxiv](https://arxiv.org/abs/2402.18842) | [Video]()
 
 [ViewFusion: Towards Multi-View Consistency via Interpolated Denoising](https://wi-sc.github.io/ViewFusion.github.io/)  
  [Xianghui Yang](https://wi-sc.github.io/xianghui-yang)<sup>1,2</sup>, [Yan Zuo](https://www.amazon.science/author/yan-zuo)<sup>1</sup>, [Sameera Ramasinghe](https://www.amazon.science/author/sameera-ramasinghe)<sup>1</sup>, [Loris Bazzani](https://lorisbaz.github.io/)<sup>1</sup>, [Gil Avraham](https://www.amazon.science/author/gil-avraham/)<sup>1</sup>, [Anton van den Hengel](https://researchers.adelaide.edu.au/profile/anton.vandenhengel)<sup>1,3</sup> <br>
